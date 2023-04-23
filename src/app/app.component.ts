@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: 'App working'
 })
-export class AppComponent {
-  title = 'jabber-chat';
-}
+export class AppComponent {}
