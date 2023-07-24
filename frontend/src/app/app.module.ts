@@ -6,11 +6,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment.development';
+import { MainComponent } from './main/main.component';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, ApolloModule, HttpClientModule],
+  declarations: [AppComponent, MainComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ApolloModule,
+    HttpClientModule
+  ],
   providers: [
     {
       provide: APOLLO_OPTIONS,
