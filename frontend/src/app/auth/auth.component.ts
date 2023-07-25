@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
-  protected title = 'Jabber Chat';
+  protected title = 'jabber chat';
 }

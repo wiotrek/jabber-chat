@@ -1,9 +1,12 @@
 import { NgModule } from "@angular/core";
 import { Route, RouterModule } from "@angular/router";
+import { MatIconModule } from '@angular/material/icon'
 
 import { SignInComponent } from './sign-in/sign-in.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthComponent } from "./auth.component";
+import { ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 
 
 const routes: Route[] = [
@@ -21,10 +24,13 @@ const routes: Route[] = [
   declarations: [
     SignInComponent,
     RegisterComponent,
-    AuthComponent
+    AuthComponent,
   ],
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ReactiveFormsModule,
+    MatIconModule,
+    CommonModule
   ]
 })
 export class AuthModule {}
