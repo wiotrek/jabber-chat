@@ -1,11 +1,26 @@
 <form [formGroup]="jabberForm" class="jabber-form" autocomplete="off">
 
-  <div class="field">
+  <div class="field" *ngFor="let item of formSkeleton">
 
-    <!-- <label for="" class="field__label"></label>
+    <label [for]="item.codeName" class="field__label">
+      {{item.label}}
+    </label>
 
-    <input type="text" class="field__input"> -->
+    <input
+      [type]="item.type"
+      class="field__input"
+      [id]="item.codeName"
+      [placeholder]="item.placeholder"
+    >
 
   </div>
+
+
+  <button
+    class="btn-submit"
+    type="submit"
+  >
+    zaloguj sie
+  </button>
 
 </form>

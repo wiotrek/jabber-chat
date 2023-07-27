@@ -8,13 +8,13 @@ export interface FormSkeletonModel {
 export const FormSkeletonArray: FormSkeletonModel[] = [
   {
     codeName: 'username',
-    placeholder: 'miejsce na login',
+    placeholder: 'login',
     label: 'Podaj login:',
     type: 'text'
   },
   {
     codeName: 'password',
-    placeholder: 'miejsce na haslo',
+    placeholder: 'haslo',
     label: 'Podaj haslo:',
     type: 'password'
   }

@@ -1,0 +1,31 @@
+.jabber-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0 50px 0;
+
+  .field {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    width: 200px;
+    gap: 3px;
+
+    &__input {
+      border: 0;
+      border-radius: var(--jb-border-radius);
+      padding: 5px 8px;
+      background-color: rgba(0, 191, 114, .2);
+      color: var(--jb-color-txt)
+    }
+  }
+
+  .btn-submit {
+    margin: auto;
+    width: 200px;
+    border-radius: var(--jb-border-radius);
+    padding: 5px 8px;
+    background-color: aqua;
+    border: 0;
+  }
+}

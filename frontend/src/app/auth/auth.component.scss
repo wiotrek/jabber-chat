@@ -17,13 +17,13 @@
         display: flex;
         align-items: baseline;
         justify-content: center;
-        gap: 10px;
-        font-size: 1.5rem;
+        gap: 20px;
+        font-size: 2rem;
         padding: 20px;
 
         &__icon {
           color: #b39cd0;
-          transform: scale(1.2) rotate(5deg);
+          transform: scale(1.5) rotate(5deg);
         }
 
         &__txt {
