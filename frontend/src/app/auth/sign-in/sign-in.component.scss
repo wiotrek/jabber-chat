@@ -1,31 +1,58 @@
 .jabber-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 10px 0 50px 0;
+  padding: 10px 0 0 0;
 
-  .field {
+  &__title {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 10px 0;
+    font-weight: lighter;
+    background-color: rgba(255, 255, 255, .1);
+  }
+
+  &__main {
     display: flex;
-    margin: auto;
     flex-direction: column;
-    width: 200px;
-    gap: 3px;
+    gap: 20px;
+    padding: 40px 0;
 
-    &__input {
-      border: 0;
+    .field {
+      display: flex;
+      margin: auto;
+      flex-direction: column;
+      width: 200px;
+      gap: 3px;
+
+      &__input {
+        border: 0;
+        border-radius: var(--jb-border-radius);
+        padding: 5px 8px;
+        background-color: rgba(0, 191, 114, .2);
+        color: var(--jb-color-txt)
+      }
+    }
+
+    .btn-submit {
+      margin: auto;
+      width: 200px;
       border-radius: var(--jb-border-radius);
       padding: 5px 8px;
-      background-color: rgba(0, 191, 114, .2);
-      color: var(--jb-color-txt)
+      background-color: rgba(179, 156, 208, .8);
+      border: 0;
     }
   }
 
-  .btn-submit {
-    margin: auto;
-    width: 200px;
-    border-radius: var(--jb-border-radius);
-    padding: 5px 8px;
-    background-color: aqua;
-    border: 0;
+  .bottom {
+    background-color: rgba(255, 255, 255, .1);
+    line-height: 1.2rem;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    &__btn {
+      cursor: pointer;
+      font-weight: lighter;
+      font-size: .8rem;
+    }
   }
 }
