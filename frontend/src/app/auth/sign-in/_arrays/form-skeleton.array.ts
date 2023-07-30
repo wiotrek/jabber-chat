@@ -1,0 +1,21 @@
+export interface FormSkeletonModel {
+  codeName: string;
+  placeholder: string;
+  label: string;
+  type: 'text' | 'number' | 'password';
+}
+
+export const FormSkeletonArray: FormSkeletonModel[] = [
+  {
+    codeName: 'username',
+    placeholder: 'login',
+    label: 'Podaj login:',
+    type: 'text'
+  },
+  {
+    codeName: 'password',
+    placeholder: 'haslo',
+    label: 'Podaj haslo:',
+    type: 'password'
+  }
+];

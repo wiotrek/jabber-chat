@@ -1,4 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+
+  // device size
+  --jb-min-tablet: 768px;
+  --jb-min-laptop: 1025px;
+  --jb-min-desktop: 1281px;
+
+  // site size
+  --jb-size-width: 1440px;
+
+  // borders
+  --jb-border-radius: 4px;
+
+  // colors
+  --jb-color-tiffany-blue: rgba(117, 221, 221, 1);
+  --jb-color-blue-munsell: rgba(80, 137, 145, 1);
+  --jb-color-dark-slate-gray: rgba(52, 90, 102, 1);
+  --jb-color-prussian-blue: rgba(23, 42, 58, 1);
+  --jb-color-midnight-green: rgba(0, 67, 70, 1);
+  --jb-color-mint: rgba(9, 188, 138, 1);
+
+  // colors opacity
+  --jb-color-mint-01: rgba(9, 188, 138, .1);
+
+  // sealed colors
+  --jb-color-txt: rgba(255, 255, 255, 1);
+
+  // shadows
+  --jb-shadow-1: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+    rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+    rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset
+}
+
 body {
-  background-color: rgba(0, 0, 0, .6);
+  background-color: var(--jb-color-prussian-blue);
+  color: var(--jb-color-txt);
+  font-size: 14px;
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

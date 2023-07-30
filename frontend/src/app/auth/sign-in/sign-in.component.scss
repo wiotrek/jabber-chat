@@ -1,0 +1,74 @@
+.jabber-form {
+  padding: 10px 0 0 0;
+
+  &__title {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 10px 0;
+    font-weight: lighter;
+    background-color: rgba(255, 255, 255, .1);
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px 0;
+
+    .field {
+      display: flex;
+      margin: auto;
+      flex-direction: column;
+      width: 200px;
+      gap: 3px;
+
+      &__input {
+        border: 0;
+        border-radius: var(--jb-border-radius);
+        padding: 5px 8px;
+        background-color: rgba(0, 191, 114, .2);
+        color: var(--jb-color-txt)
+      }
+    }
+
+    .btn-submit {
+      cursor: pointer;
+      margin: auto;
+      width: 200px;
+      border-radius: var(--jb-border-radius);
+      padding: 5px 8px;
+      background-color: rgba(179, 156, 208, .8);
+      color: rgba(255, 255, 255, .7);
+      border: 0;
+
+      &:hover, &:disabled { opacity: .8; }
+    }
+  }
+
+  .bottom {
+    background-color: rgba(255, 255, 255, .1);
+    line-height: 1.2rem;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    &__link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      font-weight: lighter;
+      font-size: .8rem;
+
+      mat-icon {
+        width: 1rem;
+        height: 1rem;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, .9)
+      }
+
+      &:hover { opacity: .8; }
+    }
+  }
+}
