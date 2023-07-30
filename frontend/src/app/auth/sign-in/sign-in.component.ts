@@ -22,4 +22,8 @@ export class SignInComponent implements OnInit {
   ngOnInit(): void {
     this.jabberForm = FormBuilderHelper(this.formBuilder);
   }
+
+  login(): void {
+    console.log(this.jabberForm.value);
+  }
 }
