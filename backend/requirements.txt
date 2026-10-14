@@ -1,3 +1,0 @@
-fastapi==0.100.0
-strawberry-graphql==0.195.2
-uvicorn==0.23.0
