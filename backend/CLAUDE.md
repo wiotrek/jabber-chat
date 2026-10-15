@@ -9,8 +9,23 @@ explicit `.js` extension (even in `.ts` files), e.g.
 ## Layout
 
 - `src/users/entities/user.entity.ts`, `src/messages/entities/message.entity.ts`
-  — the only two entities. `UsersModule`/`MessagesModule` just register them
-  via `TypeOrmModule.forFeature`; no services/controllers exist yet.
+  — the only two entities. `UsersModule` also provides `UsersService`
+  (find/create); `MessagesModule` just registers the entity, no
+  service/controller yet.
+- `src/auth/` — JWT auth (`@nestjs/jwt` + `@nestjs/passport` + `passport-jwt`).
+  `AuthController` exposes `POST /auth/register`, `POST /auth/login`,
+  `GET /auth/me` (guarded). `JwtStrategy.validate()` looks the user back up
+  by id on every request (not just trusting the payload) and returns a
+  `PublicUser` (see below), which lands on `request.user` — read it with the
+  `@CurrentUser()` decorator. Protect a route with `@UseGuards(JwtAuthGuard)`.
+  Requires `JWT_SECRET` env (no default — throws on boot if unset);
+  `JWT_EXPIRES_IN` defaults to `1h`. No refresh tokens yet, access token only.
+- `src/users/user.presenter.ts` — `toPublicUser(user)` strips the password
+  hash before a `User` leaves the API. Always send a `User` through this
+  (or reuse `AuthService`'s results) rather than returning the entity raw.
+- `main.ts` has a global `ValidationPipe({ whitelist: true,
+  forbidNonWhitelisted: true })` — DTOs need `class-validator` decorators to
+  have any effect, and unknown body fields are rejected with 400.
 - `src/database/data-source.ts` — standalone `DataSource` for the TypeORM
   CLI, exports `dataSourceOptions` which `app.module.ts` also consumes via
   `TypeOrmModule.forRoot(dataSourceOptions)`. Keep connection config in this
@@ -53,6 +68,22 @@ the user's existing local `postgres:17` Docker container
 (user/password `postgres`/`postgres`, database `jabber-chat`) — there is
 **no** Postgres service in the root `docker-compose.yml` (deliberately left
 empty; the user runs their own Postgres container outside this repo).
+
+## Environment / tooling gotchas
+
+- The user's default Node (pinned in `~/.zshrc`, not something to change) is
+  v22.14.0, which is actually *below* what `@angular-devkit/schematics`
+  (a transitive dep of `@nestjs/cli`/`@nestjs/schematics`) declares support
+  for. On that version, `nest build`/`nest start` can crash with
+  `ERR_REQUIRE_CYCLE_MODULE: Cannot require() ES Module .../ora/index.js in
+  a cycle` — `ora@9+` is ESM-only and something in `@angular-devkit`
+  `require()`s it. Fixed via a `package.json` `"overrides": { "ora":
+  "5.4.1" }` (a CJS version already used elsewhere in the tree by
+  `@nestjs/mau`'s `inquirer`). If `nest build` ever throws that error again
+  after a dependency bump, check whether this override got dropped.
+- Nothing loads `.env` automatically (no `dotenv`/`@nestjs/config` wired
+  up) — `.env.example` documents the vars, but you must export them into the
+  actual process env yourself (or add a loader) for local runs.
 
 ## Stack notes from the repo root README
 
