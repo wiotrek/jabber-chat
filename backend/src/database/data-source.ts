@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import '../env.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { DataSource, type DataSourceOptions } from 'typeorm';
