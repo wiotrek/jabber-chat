@@ -10,6 +10,7 @@ import {
 import type { Relation } from 'typeorm';
 import { User } from '../../users/entities/user.entity.js';
 import { EncryptedColumnTransformer } from '../../common/crypto/encrypted-column.transformer.js';
+import { Channel } from '../../channels/entities/channel.entity.js';
 
 @Entity('messages')
 export class Message {
@@ -27,22 +28,21 @@ export class Message {
   @Column()
   senderId: string;
 
-  @ManyToOne(() => User, (user) => user.sentMessages, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.messages, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'senderId' })
-  sender: Relation<User>;
+  user: Relation<User>;
 
   @Index()
   @Column()
-  recipientId: string;
+  channelId: string;
 
-  @ManyToOne(() => User, (user) => user.receivedMessages, {
+  @ManyToOne(() => Channel, (channel) => channel.messages, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'recipientId' })
-  recipient: Relation<User>;
-
-  @Column({ type: 'timestamptz', nullable: true })
-  readAt?: Date;
+  @JoinColumn({ name: 'channelId' })
+  channel: Relation<Channel>;
 
   @CreateDateColumn()
   createdAt: Date;

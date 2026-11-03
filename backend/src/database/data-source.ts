@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path';
 import { DataSource, type DataSourceOptions } from 'typeorm';
 import { User } from '../users/entities/user.entity.js';
 import { Message } from '../messages/entities/message.entity.js';
+import { Channel } from '../channels/entities/channel.entity.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -15,7 +16,7 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USERNAME ?? 'postgres',
   password: process.env.DB_PASSWORD ?? 'postgres',
   database: process.env.DB_NAME ?? 'jabber-chat',
-  entities: [User, Message],
+  entities: [User, Message, Channel],
   migrations: [join(__dirname, 'migrations', '*.{ts,js}')],
   synchronize: false,
 };

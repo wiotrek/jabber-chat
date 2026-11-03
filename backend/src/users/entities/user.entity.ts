@@ -3,12 +3,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import type { Relation } from 'typeorm';
 import { Message } from '../../messages/entities/message.entity.js';
+import { Channel } from '../../channels/entities/channel.entity.js';
 
 const SALT_ROUNDS = 12;
 
@@ -42,11 +45,16 @@ export class User {
   @Column({ nullable: true })
   avatarUrl?: string;
 
-  @OneToMany(() => Message, (message) => message.sender)
-  sentMessages: Relation<Message>[];
+  @OneToMany(() => Message, (message) => message.user)
+  messages: Relation<Message>[];
 
-  @OneToMany(() => Message, (message) => message.recipient)
-  receivedMessages: Relation<Message>[];
+  @ManyToMany(() => Channel, (channel: Channel) => channel.users)
+  @JoinTable({
+    name: 'channel_users',
+    joinColumn: { name: 'userId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'channelId', referencedColumnName: 'id' },
+  })
+  channels: Relation<Channel>[];
 
   @CreateDateColumn()
   createdAt: Date;
