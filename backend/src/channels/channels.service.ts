@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Channel } from './entities/channel.entity.js';
 import { User } from '../users/entities/user.entity.js';
 import { UsersService } from '../users/users.service.js';
+import { Message } from "../messages/entities/message.entity.js";
+import { channel } from "node:diagnostics_channel";
 
 @Injectable()
 export class ChannelsService {
@@ -29,12 +31,15 @@ export class ChannelsService {
     return this.channelsRepository.save(channel);
   }
 
-  async getChannel(userId: string, groupId: string): Promise<Channel> {
-    const user: User | null = await this.usersService.findById(userId);
-    if (!user) {
-      throw new ConflictException('User not exist');
-    }
+  async getChannels(userId: string): Promise<Channel[]> {
+    return await this.channelsRepository.findBy({ users: { id: userId }});
+  }
 
-    const channel = this.channelsRepository.findOneById(groupId);
+  async getMessages(userId: string, channelId: string): Promise<Message[]> {
+    const result: Channel = await this.channelsRepository.findOneByOrFail({
+      id: channelId,
+      users: { id: userId }
+    });
+    return result.messages;
   }
 }
