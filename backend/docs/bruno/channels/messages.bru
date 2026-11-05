@@ -1,0 +1,26 @@
+meta {
+  name: messages
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{url}}/channels/{{channel_id}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: {{accessToken}}
+}
+
+body:json {
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+}

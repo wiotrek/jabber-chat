@@ -1,0 +1,23 @@
+meta {
+  name: me
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{url}}/auth/me
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: {{accessToken}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+}
