@@ -21,6 +21,11 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id });
   }
 
+  isUserExist(id: string): boolean {
+    const user = this.usersRepository.findOneBy({ id });
+    return !!user;
+  }
+
   async create(params: {
     email: string;
     username: string;
