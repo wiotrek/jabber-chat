@@ -1,0 +1,30 @@
+meta {
+  name: login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/auth/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "dupa@dupa.pl",
+    "password": "dupa1234"
+  }
+}
+
+tests {
+  bru.setGlobalEnvVar("accessToken", "Bearer " + res.body.accessToken)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+}

@@ -1,0 +1,32 @@
+meta {
+  name: register
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{url}}/auth/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "dupa@dupa.pl",
+    "username": "dupol",
+    "password": "dupa1234",
+    "displayName": "Dupol"
+  }
+}
+
+tests {
+  bru.setGlobalEnvVar("accessToken", res.body.accessToken)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+}
