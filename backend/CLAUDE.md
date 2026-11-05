@@ -8,10 +8,16 @@ explicit `.js` extension (even in `.ts` files), e.g.
 
 ## Layout
 
-- `src/users/entities/user.entity.ts`, `src/messages/entities/message.entity.ts`
-  — the only two entities. `UsersModule` also provides `UsersService`
-  (find/create); `MessagesModule` just registers the entity, no
-  service/controller yet.
+- `src/users/entities/user.entity.ts`, `src/messages/entities/message.entity.ts`,
+  `src/channels/entities/channel.entity.ts` — the three entities. `UsersModule`
+  also provides `UsersService` (find/create); `MessagesModule` just registers
+  the entity, no service/controller yet.
+- `src/channels/` — `ChannelsService`/`ChannelsController` behind
+  `@UseGuards(JwtAuthGuard)`: `POST /channels/create` (name + password, creator
+  becomes the sole member), `GET /channels` (the caller's channels), and
+  `GET /channels/:id` (that channel's messages, membership-checked). There is
+  no join/invite endpoint yet, so a channel can't have more than one member
+  in practice even though `Channel` supports it.
 - `src/auth/` — JWT auth (`@nestjs/jwt` + `@nestjs/passport` + `passport-jwt`).
   `AuthController` exposes `POST /auth/register`, `POST /auth/login`,
   `GET /auth/me` (guarded). `JwtStrategy.validate()` looks the user back up
@@ -49,16 +55,21 @@ explicit `.js` extension (even in `.ts` files), e.g.
   There is deliberately no `@BeforeInsert`/`@BeforeUpdate` auto-hash hook —
   that pattern re-hashes on every unrelated save unless you track dirty
   state, which has silently corrupted passwords in other codebases.
-- `User` <-> `Message` is a directed pair of `ManyToOne`/`OneToMany`
-  (`sender`/`sentMessages`, `recipient`/`receivedMessages`), not a
-  conversation/thread model — one-to-one DMs only so far, no group chat
-  entity exists.
-- Both entities import each other, so relation property types use
+- `Message` belongs to a `Channel` (`channelId`/`channel`,
+  `ManyToOne`/`OneToMany` against `Channel.messages`) and has a sender
+  (`senderId`/`user`, `ManyToOne`/`OneToMany` against `User.messages`) — group
+  chat, not a one-to-one DM model. `User` <-> `Channel` is `ManyToMany`
+  through a `channel_users` join table.
+- `Channel.password` follows the same pattern as `User.password` —
+  `select: false`, never assigned directly, set via
+  `await channel.setPassword(plainPassword)` and checked via
+  `channel.comparePassword(plainPassword)` (bcrypt, 12 rounds).
+- All three entities import each other, so relation property types use
   `import type { Relation } from 'typeorm'` + `Relation<X>` wrapper, not the
   bare class. Without that, the compiled ESM output throws
   `ReferenceError: Cannot access 'X' before initialization` from the
   circular import at decorator-evaluation time. Keep this pattern for any
-  new entity that references `User` or `Message`.
+  new entity that references `User`, `Message`, or `Channel`.
 
 ## DB connection
 

@@ -5,29 +5,31 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { ChannelDto } from './dto/channel.dto.js';
 import { toPublicChannel, type PublicChannel } from './channel.presenter.js';
-import { Message } from "../messages/entities/message.entity.js";
-import { Channel } from "./entities/channel.entity.js";
+import {
+  toPublicMessage,
+  type PublicMessage,
+} from '../messages/message.presenter.js';
 
 @Controller('channels')
+@UseGuards(JwtAuthGuard)
 export class ChannelsController {
   constructor(private readonly channelsService: ChannelsService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
-  async getChannels(@CurrentUser() user: PublicUser): Promise<Channel[]> {
-    return await this.channelsService.getChannels(user.id);
+  async getChannels(@CurrentUser() user: PublicUser): Promise<PublicChannel[]> {
+    const channels = await this.channelsService.getChannels(user.id);
+    return channels.map(toPublicChannel);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get(':channelId')
+  @Get(':id')
   async get(
     @CurrentUser() user: PublicUser,
-    @Param('channelId') channelId: string,
-  ): Promise<Message[]> {
-    return await this.channelsService.getMessages(user.id, channelId);
+    @Param('id') channelId: string,
+  ): Promise<PublicMessage[]> {
+    const messages = await this.channelsService.getMessages(user.id, channelId);
+    return messages.map(toPublicMessage);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('create')
   async create(
     @CurrentUser() user: PublicUser,
