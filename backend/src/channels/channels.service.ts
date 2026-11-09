@@ -85,6 +85,7 @@ export class ChannelsService {
   }
 
   async getMessages(userId: string, channelId: string): Promise<Message[]> {
+    await this.checkUserInChannel(channelId, userId);
     await this.channelsRepository.findOneByOrFail({
       id: channelId,
       users: { id: userId },

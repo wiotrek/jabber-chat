@@ -33,4 +33,24 @@ export class UsersService {
     await user.setPassword(params.password);
     return this.usersRepository.save(user);
   }
+
+  findByEmail(email: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: { email },
+      select: [
+        'id',
+        'email',
+        'username',
+        'password',
+        'displayName',
+        'avatarUrl',
+        'createdAt',
+        'updatedAt',
+      ],
+    });
+  }
+
+  findById(id: string): Promise<User | null> {
+    return this.usersRepository.findOneBy({ id });
+  }
 }
