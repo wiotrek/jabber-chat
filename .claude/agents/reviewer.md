@@ -1,5 +1,5 @@
 ---
-name: y
+name: code-reviewer
 description: Reviews a pull request or the current diff for correctness bugs, security issues, and adherence to this repo's backend (NestJS/TypeORM/ESM) and frontend (Angular/signals) conventions. Use proactively once a PR is opened or a set of changes is ready to review, and before merging.
 tools: Read, Grep, Glob, Bash
 model: sonnet
