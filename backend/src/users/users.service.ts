@@ -13,12 +13,26 @@ export class UsersService {
   findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({
       where: { email },
-      select: ['id', 'email', 'username', 'password', 'displayName', 'avatarUrl', 'createdAt', 'updatedAt'],
+      select: [
+        'id',
+        'email',
+        'username',
+        'password',
+        'displayName',
+        'avatarUrl',
+        'createdAt',
+        'updatedAt',
+      ],
     });
   }
 
   findById(id: string): Promise<User | null> {
     return this.usersRepository.findOneBy({ id });
+  }
+
+  async isUserExist(id: string): Promise<boolean> {
+    const user = await this.usersRepository.findOneBy({ id });
+    return !!user;
   }
 
   async create(params: {

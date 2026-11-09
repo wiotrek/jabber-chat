@@ -1,14 +1,10 @@
 # Jabber Chat
 
-## stack
-- Angular,
-- Fast Api,
-- pqSql
-- GraphQL
+# Development
 
-## routes in angular
-- '': landing page
-- 'sign-in': login page
-- 'sign-up': registry page
-- 'chat': main view include contact list and chat view
-- 'chat/config': all configuration
+## Created functionality
+create Pull Request from gh cli
+```
+gh pr create --base master --head {current-branch}
+```
+ask agent pr-reviewer about review.
