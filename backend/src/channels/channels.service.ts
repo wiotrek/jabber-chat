@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { Channel } from './entities/channel.entity.js';
 import { UsersService } from '../users/users.service.js';
 import { Message } from '../messages/entities/message.entity.js';
@@ -21,22 +21,35 @@ export class ChannelsService {
 
   async assignUserToChannel(
     userId: string,
-    params: { channelId: string; password: string; }
+    params: { channelId: string; password: string },
   ): Promise<void> {
     const user = await this.usersService.checkUserExist(userId);
     const channel = await this.checkChannelExist(params.channelId);
     const checkPass = await channel.comparePassword(params.password);
 
     if (!checkPass) {
-      throw new UnauthorizedException("Password or Channel is not correct");
+      throw new UnauthorizedException('Invalid channel or password.');
     }
 
-    const alreadyMember = channel.users
-      .some((member) => member.id === user.id);
-    if (alreadyMember) { return; }
+    const alreadyMember = channel.users.some((member) => member.id === user.id);
+    if (alreadyMember) {
+      return;
+    }
 
     channel.users.push(user);
-    await this.channelsRepository.save(channel);
+    try {
+      await this.channelsRepository.save(channel);
+    } catch (error) {
+      // A concurrent request may have already inserted the same
+      // (channelId, userId) row into channel_users; treat that race as a
+      // successful join rather than surfacing a raw constraint-violation 500.
+      const isDuplicateMembership =
+        error instanceof QueryFailedError &&
+        (error.driverError as { code?: string }).code === '23505';
+      if (!isDuplicateMembership) {
+        throw error;
+      }
+    }
   }
 
   async checkChannelExist(channelId: string): Promise<Channel> {
@@ -86,10 +99,6 @@ export class ChannelsService {
 
   async getMessages(userId: string, channelId: string): Promise<Message[]> {
     await this.checkUserInChannel(channelId, userId);
-    await this.channelsRepository.findOneByOrFail({
-      id: channelId,
-      users: { id: userId },
-    });
     return this.messagesRepository.find({
       where: { channelId },
       order: { createdAt: 'ASC' },
