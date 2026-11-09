@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity.js';
 import { Repository } from 'typeorm';
@@ -20,20 +20,8 @@ export class MessagesService {
     channelId: string,
     dto: MessageDto,
   ): Promise<void> {
-    const userIsExist = await this.usersService.isUserExist(userId);
-
-    if (!userIsExist) {
-      throw new NotFoundException('User not exist');
-    }
-
-    const userIsInChannel = await this.channelService.isUserExistInChannel(
-      channelId,
-      userId,
-    );
-
-    if (!userIsInChannel) {
-      throw new NotFoundException('User is not in channel');
-    }
+    await this.usersService.checkUserExist(userId);
+    await this.channelService.checkUserInChannel(channelId, userId);
 
     const message = this.messagesRepository.create({
       content: dto.content,
