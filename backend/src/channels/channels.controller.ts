@@ -9,6 +9,7 @@ import {
   toPublicMessage,
   type PublicMessage,
 } from '../messages/message.presenter.js';
+import { ChannelAssignDto } from './dto/channel-assign.dto.js';
 
 @Controller('channels')
 @UseGuards(JwtAuthGuard)
@@ -40,5 +41,19 @@ export class ChannelsController {
       password: dto.password,
     });
     return toPublicChannel(channel);
+  }
+
+  @Post('assign/:id')
+  async assign(
+    @CurrentUser() user: PublicUser,
+    @Param('id') channelId: string,
+    @Body() dto: ChannelAssignDto,
+  ): Promise<PublicMessage[]> {
+    await this.channelsService.assignUserToChannel(user.id, {
+      channelId,
+      password: dto.password,
+    });
+    const messages = await this.channelsService.getMessages(user.id, channelId);
+    return messages.map(toPublicMessage);
   }
 }
