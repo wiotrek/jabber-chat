@@ -47,6 +47,18 @@ export class ChannelsService {
     return this.messagesRepository.find({
       where: { channelId },
       order: { createdAt: 'ASC' },
+      relations: { user: true },
     });
+  }
+
+  async isUserExistInChannel(
+    channelId: string,
+    userId: string,
+  ): Promise<boolean> {
+    const channel = await this.channelsRepository.findOneBy({
+      id: channelId,
+      users: { id: userId },
+    });
+    return !!channel;
   }
 }

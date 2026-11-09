@@ -14,13 +14,6 @@ headers {
   Authorization: {{accessToken}}
 }
 
-body:json {
-}
-
-tests {
-  bru.setGlobalEnvVar("channel_id", res.body[0].id)
-}
-
 settings {
   encodeUrl: true
   timeout: 0
