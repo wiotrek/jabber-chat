@@ -1,8 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { Channel } from './entities/channel.entity.js';
-import { User } from '../users/entities/user.entity.js';
 import { UsersService } from '../users/users.service.js';
 import { Message } from '../messages/entities/message.entity.js';
 
@@ -16,6 +19,64 @@ export class ChannelsService {
     private readonly usersService: UsersService,
   ) {}
 
+  async assignUserToChannel(
+    userId: string,
+    params: { channelId: string; password: string },
+  ): Promise<void> {
+    const user = await this.usersService.checkUserExist(userId);
+    const channel = await this.checkChannelExist(params.channelId);
+    const checkPass = await channel.comparePassword(params.password);
+
+    if (!checkPass) {
+      throw new UnauthorizedException('Invalid channel or password.');
+    }
+
+    const alreadyMember = channel.users.some((member) => member.id === user.id);
+    if (alreadyMember) {
+      return;
+    }
+
+    channel.users.push(user);
+    try {
+      await this.channelsRepository.save(channel);
+    } catch (error) {
+      // A concurrent request may have already inserted the same
+      // (channelId, userId) row into channel_users; treat that race as a
+      // successful join rather than surfacing a raw constraint-violation 500.
+      const isDuplicateMembership =
+        error instanceof QueryFailedError &&
+        (error.driverError as { code?: string }).code === '23505';
+      if (!isDuplicateMembership) {
+        throw error;
+      }
+    }
+  }
+
+  async checkChannelExist(channelId: string): Promise<Channel> {
+    const channel = await this.channelsRepository.findOne({
+      where: { id: channelId },
+      select: { id: true, name: true, password: true },
+      relations: { users: true },
+    });
+
+    if (!channel) {
+      throw new NotFoundException('Channel not exist');
+    }
+
+    return channel;
+  }
+
+  async checkUserInChannel(channelId: string, userId: string): Promise<void> {
+    const channel = await this.channelsRepository.findOneBy({
+      id: channelId,
+      users: { id: userId },
+    });
+
+    if (!channel) {
+      throw new NotFoundException('User is not in channel');
+    }
+  }
+
   async create(
     userId: string,
     params: {
@@ -23,10 +84,7 @@ export class ChannelsService {
       password: string;
     },
   ): Promise<Channel> {
-    const user: User | null = await this.usersService.findById(userId);
-    if (!user) {
-      throw new NotFoundException('User not exist');
-    }
+    const user = await this.usersService.checkUserExist(userId);
     const channel = this.channelsRepository.create({
       name: params.name,
       users: [user],
@@ -40,25 +98,11 @@ export class ChannelsService {
   }
 
   async getMessages(userId: string, channelId: string): Promise<Message[]> {
-    await this.channelsRepository.findOneByOrFail({
-      id: channelId,
-      users: { id: userId },
-    });
+    await this.checkUserInChannel(channelId, userId);
     return this.messagesRepository.find({
       where: { channelId },
       order: { createdAt: 'ASC' },
       relations: { user: true },
     });
-  }
-
-  async isUserExistInChannel(
-    channelId: string,
-    userId: string,
-  ): Promise<boolean> {
-    const channel = await this.channelsRepository.findOneBy({
-      id: channelId,
-      users: { id: userId },
-    });
-    return !!channel;
   }
 }
