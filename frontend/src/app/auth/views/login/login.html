@@ -1,0 +1,49 @@
+<main class="auth-view">
+  <h1>Log in</h1>
+
+  <form class="auth-form" [formRoot]="loginForm">
+    <div class="field">
+      <label for="login-email">Email</label>
+      <input
+        id="login-email"
+        type="email"
+        autocomplete="email"
+        [formField]="loginForm.email"
+        [attr.aria-invalid]="loginForm.email().invalid()"
+        [attr.aria-describedby]="loginForm.email().touched() && loginForm.email().invalid() ? 'login-email-error' : null"
+      />
+      @if (loginForm.email().touched()) {
+        @for (error of loginForm.email().errors(); track error.kind) {
+          <p id="login-email-error" class="field-error" role="alert">{{ error.message }}</p>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="login-password">Password</label>
+      <input
+        id="login-password"
+        type="password"
+        autocomplete="current-password"
+        [formField]="loginForm.password"
+        [attr.aria-invalid]="loginForm.password().invalid()"
+        [attr.aria-describedby]="loginForm.password().touched() && loginForm.password().invalid() ? 'login-password-error' : null"
+      />
+      @if (loginForm.password().touched()) {
+        @for (error of loginForm.password().errors(); track error.kind) {
+          <p id="login-password-error" class="field-error" role="alert">{{ error.message }}</p>
+        }
+      }
+    </div>
+
+    @for (error of loginForm().errors(); track error.kind) {
+      <p class="form-error" role="alert">{{ error.message }}</p>
+    }
+
+    <button type="submit" [disabled]="loginForm().submitting()">
+      {{ loginForm().submitting() ? 'Logging in…' : 'Log in' }}
+    </button>
+  </form>
+
+  <p class="auth-switch">Don't have an account? <a routerLink="/auth/register">Register</a></p>
+</main>

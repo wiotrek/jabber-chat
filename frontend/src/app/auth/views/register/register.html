@@ -1,0 +1,76 @@
+<main class="auth-view">
+  <h1>Register</h1>
+
+  <form class="auth-form" [formRoot]="registerForm">
+    <div class="field">
+      <label for="register-email">Email</label>
+      <input
+        id="register-email"
+        type="email"
+        autocomplete="email"
+        [formField]="registerForm.email"
+        [attr.aria-invalid]="registerForm.email().invalid()"
+        [attr.aria-describedby]="registerForm.email().touched() && registerForm.email().invalid() ? 'register-email-error' : null"
+      />
+      @if (registerForm.email().touched()) {
+        @for (error of registerForm.email().errors(); track error.kind) {
+          <p id="register-email-error" class="field-error" role="alert">{{ error.message }}</p>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="register-username">Username</label>
+      <input
+        id="register-username"
+        type="text"
+        autocomplete="username"
+        [formField]="registerForm.username"
+        [attr.aria-invalid]="registerForm.username().invalid()"
+        [attr.aria-describedby]="registerForm.username().touched() && registerForm.username().invalid() ? 'register-username-error' : null"
+      />
+      @if (registerForm.username().touched()) {
+        @for (error of registerForm.username().errors(); track error.kind) {
+          <p id="register-username-error" class="field-error" role="alert">{{ error.message }}</p>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="register-display-name">Display name <span class="optional">(optional)</span></label>
+      <input
+        id="register-display-name"
+        type="text"
+        autocomplete="name"
+        [formField]="registerForm.displayName"
+      />
+    </div>
+
+    <div class="field">
+      <label for="register-password">Password</label>
+      <input
+        id="register-password"
+        type="password"
+        autocomplete="new-password"
+        [formField]="registerForm.password"
+        [attr.aria-invalid]="registerForm.password().invalid()"
+        [attr.aria-describedby]="registerForm.password().touched() && registerForm.password().invalid() ? 'register-password-error' : null"
+      />
+      @if (registerForm.password().touched()) {
+        @for (error of registerForm.password().errors(); track error.kind) {
+          <p id="register-password-error" class="field-error" role="alert">{{ error.message }}</p>
+        }
+      }
+    </div>
+
+    @for (error of registerForm().errors(); track error.kind) {
+      <p class="form-error" role="alert">{{ error.message }}</p>
+    }
+
+    <button type="submit" [disabled]="registerForm().submitting()">
+      {{ registerForm().submitting() ? 'Creating account…' : 'Create account' }}
+    </button>
+  </form>
+
+  <p class="auth-switch">Already have an account? <a routerLink="/auth/login">Log in</a></p>
+</main>
