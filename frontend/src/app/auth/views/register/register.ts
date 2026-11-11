@@ -1,15 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { email, form, minLength, required } from '@angular/forms/signals';
-import { Router } from '@angular/router';
-import { AuthService } from '../../_service/auth.service';
-
-interface RegisterFormModel {
-  email: string;
-  username: string;
-  password: string;
-  displayName: string;
-}
+import { RegisterFormModel } from '../../_models/auth.model';
+import { SharedCmpHelper } from '../../_helpers/shared-cmp.helper';
 
 @Component({
   selector: 'app-register',
@@ -17,9 +10,7 @@ interface RegisterFormModel {
   styleUrl: './register.scss',
   templateUrl: './register.html',
 })
-export class Register {
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
+export class Register extends SharedCmpHelper {
 
   private readonly model = signal<RegisterFormModel>({
     email: '',

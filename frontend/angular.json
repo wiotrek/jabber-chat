@@ -84,7 +84,6 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "exclude": [
-              "app/app.spec.ts",
               "app/auth/views/login/login.spec.ts",
               "app/auth/views/register/register.spec.ts"
             ]

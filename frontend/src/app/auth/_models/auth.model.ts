@@ -24,3 +24,10 @@ export interface RegisterCredentials {
   password: string;
   displayName?: string;
 }
+
+export interface RegisterFormModel {
+  email: string;
+  username: string;
+  password: string;
+  displayName: string;
+}
