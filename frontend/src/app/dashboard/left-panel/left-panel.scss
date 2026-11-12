@@ -1,0 +1,53 @@
+@mixin bgShadow {
+  position: relative;
+  border-radius: 5px;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(245 245 245);
+    border-radius: inherit;
+    opacity: .1;
+    z-index: -1;
+  }
+}
+
+.left-panel {
+  display: grid;
+  grid-template-rows: 50px auto 80px;
+  grid-gap: 10px;
+  background-color: rgb(1 28 80 / 0.9);
+  height: 100vh;
+  border-right: 1px solid rgba(3, 3, 18, 1);
+  padding: 5px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  @include bgShadow;
+}
+
+.bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid rgba(3, 3, 18, 1);
+
+  .logout {
+    border: 0;
+    padding: 5px 10px;
+    background: none;
+    color: white;
+    @include bgShadow;
+  }
+}
+
+
