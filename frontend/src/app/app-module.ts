@@ -6,9 +6,11 @@ import { App } from './app';
 import { AuthModule } from './auth/auth-module';
 import { Dashboard } from './dashboard/dashboard';
 import { LeftPanel } from './dashboard/left-panel/left-panel';
+import { Header } from './dashboard/header/header';
+import { Messages } from './dashboard/messages/messages';
 
 @NgModule({
-  declarations: [App, Dashboard, LeftPanel],
+  declarations: [App, Dashboard, LeftPanel, Header, Messages],
   imports: [BrowserModule, AppRoutingModule, AuthModule, NgOptimizedImage],
   providers: [provideBrowserGlobalErrorListeners()],
   bootstrap: [App],

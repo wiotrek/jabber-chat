@@ -18,35 +18,73 @@
 }
 
 .left-panel {
-  display: grid;
-  grid-template-rows: 50px auto 80px;
-  grid-gap: 10px;
+  height: 100%;
+  width: 70px;
   background-color: rgb(1 28 80 / 0.9);
-  height: 100vh;
   border-right: 1px solid rgba(3, 3, 18, 1);
-  padding: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.header {
+
+.channels-section {
+  flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.channel {
+  margin: 0 auto;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
   justify-content: center;
-  width: 100px;
+  align-items: center;
+  background: none;
+  color: white;
+  border-radius: 5px;
+  font-size: 12px;
+  text-align: center;
+  word-break: break-word;
+  transition: opacity 0.2s;
   @include bgShadow;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .channel-name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
 }
 
-.bottom {
+.actions-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid rgba(3, 3, 18, 1);
+  gap: 10px;
+}
 
-  .logout {
-    border: 0;
-    padding: 5px 10px;
-    background: none;
-    color: white;
-    @include bgShadow;
+.logout {
+  cursor: pointer;
+  border: 0;
+  padding: 10px;
+  background: none;
+  color: white;
+  @include bgShadow;
+
+  &:hover {
+    opacity: .8;
   }
 }
 
