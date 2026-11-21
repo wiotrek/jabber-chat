@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-messages',
   standalone: false,
-  styleUrl: './messages.scss',
-  templateUrl: './messages.html',
+  styleUrl: './channel.scss',
+  templateUrl: './channel.html',
 })
-export class Messages {}
+export class Channel {}

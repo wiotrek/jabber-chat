@@ -7,12 +7,17 @@ import { AuthModule } from './auth/auth-module';
 import { Dashboard } from './dashboard/dashboard';
 import { LeftPanel } from './dashboard/left-panel/left-panel';
 import { Header } from './dashboard/header/header';
-import { Messages } from './dashboard/messages/messages';
+import { errorInterceptor } from './_interceptors/error.interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { Channel } from './dashboard/channel/channel';
 
 @NgModule({
-  declarations: [App, Dashboard, LeftPanel, Header, Messages],
+  declarations: [App, Dashboard, LeftPanel, Header, Channel],
   imports: [BrowserModule, AppRoutingModule, AuthModule, NgOptimizedImage],
-  providers: [provideBrowserGlobalErrorListeners()],
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withInterceptors([errorInterceptor])),
+  ],
   bootstrap: [App],
 })
 export class AppModule {}

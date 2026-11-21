@@ -1,5 +1,5 @@
 import { Component, inject, effect } from '@angular/core';
-import { ChannelsService } from '../_service/channels.service';
+import { ChannelsService } from '../_services/channels.service';
 import { AuthService } from '../../auth/_service/auth.service';
 
 @Component({

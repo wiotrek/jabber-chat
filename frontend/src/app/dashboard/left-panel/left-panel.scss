@@ -53,11 +53,15 @@
   text-align: center;
   word-break: break-word;
   transition: opacity 0.2s;
+  border: 0;
+  text-decoration: none;
   @include bgShadow;
 
-  &:hover {
-    opacity: 0.8;
+  &--active {
+    filter: brightness(1.2);
   }
+
+  &:hover { opacity: 0.8; }
 
   .channel-name {
     display: block;

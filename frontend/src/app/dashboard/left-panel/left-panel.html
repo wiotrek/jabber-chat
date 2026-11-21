@@ -2,9 +2,13 @@
 
   <div class="channels-section">
     @for (channel of channels(); track channel.id) {
-      <div class="channel">
+      <a
+        class="channel"
+        routerLinkActive="channel--active"
+        [routerLink]="channel.id"
+      >
         <span class="channel-name">{{ channel.name | slice:0:1 }}</span>
-      </div>
+      </a>
     }
   </div>
 
