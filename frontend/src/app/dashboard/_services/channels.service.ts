@@ -1,18 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Service, inject, signal } from '@angular/core';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { Channel } from '../_models/channel.model';
 import { environment } from '../../../environments/environment.development';
 import { MessageModel } from '../_models/message.model';
+import { WebSocketService } from './websocket.service';
 
 const API_URL = environment.API_URL;
 
 @Service()
 export class ChannelsService {
   private readonly http = inject(HttpClient);
+  private readonly webSocket = inject(WebSocketService);
   private readonly channelsSignal = signal<Channel[]>([]);
+  private readonly messagesSignal = signal<MessageModel[]>([]);
 
   readonly channels = this.channelsSignal.asReadonly();
+  readonly messages = this.messagesSignal.asReadonly();
 
   async loadChannels(): Promise<Channel[]> {
     try {
@@ -28,7 +32,30 @@ export class ChannelsService {
     }
   }
 
-  loadMessages(channelId: string): Observable<MessageModel[]> {
-    return this.http.get<MessageModel[]>(`${API_URL}/channels/${channelId}`);
+  async loadMessages(channelId: string): Promise<MessageModel[]> {
+    try {
+      const messages = await firstValueFrom(
+        this.http.get<MessageModel[]>(`${API_URL}/channels/${channelId}`),
+      );
+      this.messagesSignal.set(messages);
+      this.connectToChannel(channelId);
+      return messages;
+    } catch (error) {
+      console.error('Failed to load messages:', error);
+      return [];
+    }
+  }
+
+  private connectToChannel(channelId: string): void {
+    this.webSocket.connect();
+    this.webSocket.emit('join_channel', { channelId });
+
+    this.webSocket.on(`message:${channelId}`, (message: MessageModel) => {
+      this.messagesSignal.update((msgs) => [...msgs, message]);
+    });
+  }
+
+  sendMessage(channelId: string, content: string): void {
+    this.webSocket.emit('send_message', { channelId, content });
   }
 }

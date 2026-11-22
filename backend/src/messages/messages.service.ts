@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { MessageDto } from './dto/message.dto.js';
 import { ChannelsService } from '../channels/channels.service.js';
 import { UsersService } from '../users/users.service.js';
+import { MessageSchema } from './schema/message.schema.js';
+import { use } from 'passport';
 
 @Injectable()
 export class MessagesService {
@@ -19,8 +21,8 @@ export class MessagesService {
     userId: string,
     channelId: string,
     dto: MessageDto,
-  ): Promise<void> {
-    await this.usersService.checkUserExist(userId);
+  ): Promise<MessageSchema> {
+    const user = await this.usersService.checkUserExist(userId);
     await this.channelService.checkUserInChannel(channelId, userId);
 
     const message = this.messagesRepository.create({
@@ -29,6 +31,13 @@ export class MessagesService {
       channelId: channelId,
     });
 
-    await this.messagesRepository.save(message);
+    const response = await this.messagesRepository.save(message);
+
+    return {
+      id: response.id,
+      content: dto.content,
+      createdAt: response.createdAt,
+      senderUsername: user.displayName
+    } as MessageSchema;
   }
 }
