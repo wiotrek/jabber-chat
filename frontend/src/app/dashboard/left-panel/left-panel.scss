@@ -1,0 +1,95 @@
+@mixin bgShadow {
+  position: relative;
+  border-radius: 5px;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(245 245 245);
+    border-radius: inherit;
+    opacity: .1;
+    z-index: -1;
+  }
+}
+
+.left-panel {
+  height: 100%;
+  width: 70px;
+  background-color: rgb(1 28 80 / 0.9);
+  border-right: 1px solid rgba(3, 3, 18, 1);
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.channels-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.channel {
+  margin: 0 auto;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  color: white;
+  border-radius: 5px;
+  font-size: 12px;
+  text-align: center;
+  word-break: break-word;
+  transition: opacity 0.2s;
+  border: 0;
+  text-decoration: none;
+  @include bgShadow;
+
+  &--active {
+    filter: brightness(1.2);
+  }
+
+  &:hover { opacity: 0.8; }
+
+  .channel-name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+}
+
+.actions-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout {
+  cursor: pointer;
+  border: 0;
+  padding: 10px;
+  background: none;
+  color: white;
+  @include bgShadow;
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
+
