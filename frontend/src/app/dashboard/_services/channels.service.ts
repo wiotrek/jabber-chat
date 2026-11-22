@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Service, inject, signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { Channel } from '../_models/channel.model';
 import { environment } from '../../../environments/environment.development';
+import { MessageModel } from '../_models/message.model';
 
 const API_URL = environment.API_URL;
 
@@ -25,5 +26,9 @@ export class ChannelsService {
       this.channelsSignal.set([]);
       return [];
     }
+  }
+
+  loadMessages(channelId: string): Observable<MessageModel[]> {
+    return this.http.get<MessageModel[]>(`${API_URL}/channels/${channelId}`);
   }
 }

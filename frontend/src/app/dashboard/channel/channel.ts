@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { ChannelsService } from '../_services/channels.service';
+import { ActivatedRoute } from '@angular/router';
+import { MessageModel } from '../_models/message.model';
 
 @Component({
   selector: 'app-messages',
@@ -6,4 +9,16 @@ import { Component } from '@angular/core';
   styleUrl: './channel.scss',
   templateUrl: './channel.html',
 })
-export class Channel {}
+export class Channel implements OnInit {
+  private readonly channelsService = inject(ChannelsService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+
+  messages: MessageModel[] = [];
+
+  ngOnInit(): void {
+    const channelId = this.activatedRoute.snapshot.paramMap.get('id') ?? '';
+    this.channelsService.loadMessages(channelId).subscribe((m) => {
+      this.messages = m;
+    });
+  }
+}

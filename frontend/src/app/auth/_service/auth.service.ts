@@ -8,6 +8,7 @@ import {
   RegisterCredentials,
 } from '../_models/auth.model';
 import { environment } from '../../../environments/environment.development';
+import { Router } from '@angular/router';
 
 const API_URL = environment.API_URL;
 const ACCESS_TOKEN_KEY = 'jabber-chat.accessToken';
@@ -15,6 +16,7 @@ const ACCESS_TOKEN_KEY = 'jabber-chat.accessToken';
 @Service()
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
 
   private readonly accessTokenSignal = signal<string | null>(
     localStorage.getItem(ACCESS_TOKEN_KEY),
@@ -59,6 +61,7 @@ export class AuthService {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     this.accessTokenSignal.set(null);
     this.currentUserSignal.set(null);
+    this.router.navigate(['auth/login'])
   }
 
   private setSession(result: AuthResult): void {
