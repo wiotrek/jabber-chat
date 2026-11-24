@@ -6,7 +6,6 @@ import { MessageDto } from './dto/message.dto.js';
 import { ChannelsService } from '../channels/channels.service.js';
 import { UsersService } from '../users/users.service.js';
 import { MessageSchema } from './schema/message.schema.js';
-import { use } from 'passport';
 
 @Injectable()
 export class MessagesService {

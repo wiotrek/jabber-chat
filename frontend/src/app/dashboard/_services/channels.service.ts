@@ -32,6 +32,21 @@ export class ChannelsService {
     }
   }
 
+  async createChannel(name: string, password: string): Promise<Channel> {
+    const channel = await firstValueFrom(
+      this.http.post<Channel>(`${API_URL}/channels/create`, { name, password }),
+    );
+    this.channelsSignal.update((channels) => [...channels, channel]);
+    return channel;
+  }
+
+  async assignChannel(channelId: string, password: string): Promise<void> {
+    await firstValueFrom(
+      this.http.post(`${API_URL}/channels/assign/${channelId}`, { password }),
+    );
+    await this.loadChannels();
+  }
+
   async loadMessages(channelId: string): Promise<MessageModel[]> {
     try {
       const messages = await firstValueFrom(

@@ -10,16 +10,11 @@ import { Header } from './dashboard/header/header';
 import { errorInterceptor } from './_interceptors/error.interceptor';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { Channel } from './dashboard/channel/channel';
+import { ChannelNew } from './dashboard/channel-new/channel-new';
 
 @NgModule({
-  declarations: [App, Dashboard, LeftPanel, Header, Channel],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AuthModule,
-    NgOptimizedImage,
-    DatePipe
-  ],
+  declarations: [App, Dashboard, LeftPanel, Header, Channel, ChannelNew],
+  imports: [BrowserModule, AppRoutingModule, AuthModule, NgOptimizedImage, DatePipe],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([errorInterceptor])),
