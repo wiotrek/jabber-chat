@@ -1,0 +1,138 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  color: white;
+  height: 100%;
+
+  .side {
+
+    .fa-solid.fa-bong {
+      font-size: 80px;
+    }
+
+    &__description {
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+
+    &__buttons {
+      display: flex;
+      justify-content: space-evenly;
+
+      .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        border-radius: 5px;
+        border: 0;
+        padding: 5px 10px;
+        font-size: 1.1rem;
+        cursor: pointer;
+
+        &:nth-child(2) {
+          background-color: fuchsia;
+        }
+
+        &:nth-child(1) {
+          background-color: aqua;
+        }
+
+        &:hover {
+          opacity: .7;
+        }
+      }
+    }
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(3 3 18 / 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: clamp(260px, 90%, 400px);
+  padding: 30px 20px 20px;
+  border-radius: 8px;
+  background-color: rgb(1 28 80 / 0.95);
+  color: white;
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: 0;
+    background: none;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .7;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  &__input {
+    height: 40px;
+    border: 0;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 1rem;
+    color: white;
+    background-color: rgb(3 3 18 / 0.5);
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    &:focus {
+      outline: none;
+      background-color: rgb(3 3 18 / 0.8);
+    }
+  }
+
+  &__error {
+    margin: 0;
+    color: #ff6b6b;
+    font-size: .9rem;
+  }
+
+  &__submit {
+    height: 40px;
+    border: 0;
+    border-radius: 5px;
+    background-color: rgb(28, 80, 255);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: .8;
+    }
+
+    &:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+  }
+}

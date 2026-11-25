@@ -20,5 +20,6 @@ const expiresIn = (process.env.JWT_EXPIRES_IN ??
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
+  exports: [JwtModule],
 })
 export class AuthModule {}

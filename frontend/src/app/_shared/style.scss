@@ -1,0 +1,18 @@
+@mixin bgShadow {
+  position: relative;
+  border-radius: 5px;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(245 245 245);
+    border-radius: inherit;
+    opacity: .1;
+    z-index: -1;
+  }
+}
