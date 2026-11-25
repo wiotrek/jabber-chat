@@ -2,7 +2,7 @@
 
   <div class="messages">
 
-    <div class="messages-container">
+    <div class="messages-container" #messagesRef>
       @for (message of messages(); track message.id) {
         <div class="message">
           <div class="message__side">
@@ -16,7 +16,6 @@
       } @empty {
         <div class="no-messages"></div>
       }
-
     </div>
 
     <div class="input-container">

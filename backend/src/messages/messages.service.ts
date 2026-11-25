@@ -36,7 +36,7 @@ export class MessagesService {
       id: response.id,
       content: dto.content,
       createdAt: response.createdAt,
-      senderUsername: user.displayName
+      senderUsername: user.username
     } as MessageSchema;
   }
 }

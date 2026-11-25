@@ -40,8 +40,12 @@
   text-decoration: none;
   @include bgShadow;
 
+  &--add {
+    background-color: rgba(28, 80, 255, 1);
+  }
+
   &--active {
-    filter: brightness(1.2);
+    opacity: .5;
   }
 
   &:hover { opacity: 0.8; }

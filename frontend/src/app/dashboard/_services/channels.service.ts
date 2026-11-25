@@ -17,12 +17,11 @@ export class ChannelsService {
 
   readonly channels = this.channelsSignal.asReadonly();
   readonly messages = this.messagesSignal.asReadonly();
+  readonly currentChannelSignal = signal<Channel | null>(null);
 
   async loadChannels(): Promise<Channel[]> {
     try {
-      const channels = await firstValueFrom(
-        this.http.get<Channel[]>(`${API_URL}/channels`),
-      );
+      const channels = await firstValueFrom(this.http.get<Channel[]>(`${API_URL}/channels`));
       this.channelsSignal.set(channels);
       return channels;
     } catch (error) {
@@ -41,9 +40,7 @@ export class ChannelsService {
   }
 
   async assignChannel(channelId: string, password: string): Promise<void> {
-    await firstValueFrom(
-      this.http.post(`${API_URL}/channels/assign/${channelId}`, { password }),
-    );
+    await firstValueFrom(this.http.post(`${API_URL}/channels/assign/${channelId}`, { password }));
     await this.loadChannels();
   }
 
@@ -61,16 +58,47 @@ export class ChannelsService {
     }
   }
 
+  private messageListener: ((message: MessageModel) => void) | null = null;
+  private listenerChannelId: string | null = null;
+
   private connectToChannel(channelId: string): void {
     this.webSocket.connect();
     this.webSocket.emit('join_channel', { channelId });
 
-    this.webSocket.on(`message:${channelId}`, (message: MessageModel) => {
+    if (this.listenerChannelId === channelId) {
+      return;
+    }
+
+    if (this.listenerChannelId && this.messageListener) {
+      this.webSocket.off(`message:${this.listenerChannelId}`, this.messageListener);
+    }
+
+    this.messageListener = (message: MessageModel) => {
       this.messagesSignal.update((msgs) => [...msgs, message]);
-    });
+    };
+    this.webSocket.on(`message:${channelId}`, this.messageListener);
+    this.listenerChannelId = channelId;
   }
 
   sendMessage(channelId: string, content: string): void {
     this.webSocket.emit('send_message', { channelId, content });
+  }
+
+  setCurrentChannelSignal(channelId: string | null): void {
+    if (!channelId) {
+      this.currentChannelSignal.set(null);
+      return;
+    }
+    const channelIndex = this.channels().findIndex((c) => c.id === channelId);
+    if (channelIndex === -1) {
+      this.currentChannelSignal.set(null);
+      return;
+    }
+
+    const channel = this.channels()[channelIndex];
+    this.currentChannelSignal.set({
+      name: channel.name,
+      id: channel.id,
+    } as Channel);
   }
 }
