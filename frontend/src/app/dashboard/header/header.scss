@@ -1,11 +1,26 @@
-h1 {
+.header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  //width: 100%;
+  justify-content: space-between;
   font-size: 1rem;
-  color: aliceblue;
-  background-color: rgb(1 28 80 / 0.3);
+  background-color: rgb(227 217 217);
   margin: 0;
-  padding: 10px;
+  padding: 5px 10px;
+}
+
+.copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+
+  &:hover {
+    opacity: .7;
+  }
 }

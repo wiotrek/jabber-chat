@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Dashboard } from './dashboard/dashboard';
 import { authGuard } from './auth/_service/auth.guard';
 import { Channel } from './dashboard/channel/channel';
+import { ChannelNew } from './dashboard/channel-new/channel-new';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
     component: Dashboard,
     canActivate: [authGuard],
     children: [
+      { path: '', component: ChannelNew },
       { path: ':id', component: Channel }
     ]
   }

@@ -1,4 +1,26 @@
-<h1>
-  <img ngSrc="logo.svg" alt="JabberChat logo" width="18" height="18" priority />
-  Jabber chat
-</h1>
+<div class="header">
+
+  <div class="side">
+
+    @if (channelsService.currentChannelSignal(); as c) {
+      <i class="fa-solid fa-bong"></i>
+      {{ c.name }}
+    }
+
+  </div>
+
+  <div class="side">
+    @if (channelsService.currentChannelSignal(); as c) {
+      <button
+        type="button"
+        class="copy-btn"
+        [attr.aria-label]="copied() ? 'Copied' : 'Copy channel ID'"
+        (click)="copyChannelId(c.id)"
+      >
+        <i class="fa-regular" [class.fa-copy]="!copied()" [class.fa-check]="copied()"></i>
+        {{ copied() ? 'Copied!' : c.id }}
+      </button>
+    }
+  </div>
+
+</div>

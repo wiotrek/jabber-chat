@@ -1,1 +1,36 @@
-<p>{{messages | json}}</p>
+<div class="bucket">
+
+  <div class="messages">
+
+    <div class="messages-container" #messagesRef>
+      @for (message of messages(); track message.id) {
+        <div class="message">
+          <div class="message__side">
+            <div class="message-time">{{ message.createdAt | date:'short' }}</div>
+            <div class="message-sender">{{ message.senderUsername }}</div>
+          </div>
+          <div class="message__side">
+            <div class="message-content">{{ message.content }}</div>
+          </div>
+        </div>
+      } @empty {
+        <div class="no-messages"></div>
+      }
+    </div>
+
+    <div class="input-container">
+      <input
+        class="message-input"
+        placeholder="send message"
+        [value]="messageInput()"
+        (input)="onMessageInput($event)"
+        (keyup.enter)="sendMessage()"
+      >
+      <button class="send-button" (click)="sendMessage()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+
+  </div>
+
+</div>

@@ -1,10 +1,24 @@
 <div class="left-panel">
 
   <div class="channels-section">
+
+    <a
+      class="channel channel--add"
+      routerLinkActive="channel--active"
+      [routerLinkActiveOptions]="{exact: true}"
+      routerLink=""
+    >
+      <span class="channel-name">
+        <i class="fa-solid fa-plus"></i>
+      </span>
+
+    </a>
+
     @for (channel of channels(); track channel.id) {
       <a
         class="channel"
         routerLinkActive="channel--active"
+        [routerLinkActiveOptions]="{exact: true}"
         [routerLink]="channel.id"
       >
         <span class="channel-name">{{ channel.name | slice:0:1 }}</span>

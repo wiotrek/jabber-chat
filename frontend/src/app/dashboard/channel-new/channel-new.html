@@ -1,0 +1,97 @@
+<div class="wrapper">
+
+  <div class="side">
+    <i class="fa-solid fa-bong"></i>
+  </div>
+
+  <div class="side">
+
+    <p class="side__description">
+      Do you wanna add new channel or assign to existed channel?
+    </p>
+
+    <div class="side__buttons">
+
+      <button class="btn" (click)="openCreateModal()">
+        <i class="fa-solid fa-plus"></i>
+        Create
+      </button>
+
+      <button class="btn" (click)="openAssignModal()">
+        <i class="fa-solid fa-link"></i>
+        Assign
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+@if (modalMode()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+      <button class="modal__close" (click)="closeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      @if (modalMode() === 'create') {
+        <h2 class="modal__title">Create channel</h2>
+
+        <input
+          class="modal__input"
+          placeholder="Channel name"
+          [value]="name()"
+          (input)="onNameInput($event)"
+        >
+
+        <input
+          class="modal__input"
+          type="password"
+          placeholder="Password"
+          [value]="password()"
+          (input)="onPasswordInput($event)"
+          (keyup.enter)="submitCreate()"
+        >
+
+        @if (error()) {
+          <p class="modal__error">{{ error() }}</p>
+        }
+
+        <button class="modal__submit" [disabled]="isSubmitting()" (click)="submitCreate()">
+          Create channel
+        </button>
+      }
+
+      @if (modalMode() === 'assign') {
+        <h2 class="modal__title">Assign to channel</h2>
+
+        <input
+          class="modal__input"
+          placeholder="Channel ID"
+          [value]="channelId()"
+          (input)="onChannelIdInput($event)"
+        >
+
+        <input
+          class="modal__input"
+          type="password"
+          placeholder="Password"
+          [value]="password()"
+          (input)="onPasswordInput($event)"
+          (keyup.enter)="submitAssign()"
+        >
+
+        @if (error()) {
+          <p class="modal__error">{{ error() }}</p>
+        }
+
+        <button class="modal__submit" [disabled]="isSubmitting()" (click)="submitAssign()">
+          Assign
+        </button>
+      }
+
+    </div>
+  </div>
+}
